@@ -113,14 +113,15 @@ const Home: NextPage = ( ) => {
   };
 
   useEffect(()=>{
-    registerServiceWorker()
-
     const myStorage:Storage = localStorage;
     
     if(storage.length !== 0 && myStorage.getItem("storage") !== null){
       setStorage(myStorage.getItem("storage") || "");
       getDataFirebase();
+      return
     };
+
+    registerServiceWorker()
 
     if(storage === ""){
       setStorage(v4());
