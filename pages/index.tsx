@@ -118,11 +118,9 @@ const Home: NextPage = ( ) => {
     const myStorage:Storage = localStorage;
     
     if(storage.length !== 0 && myStorage.getItem("storage") !== null){
+      setStorage(myStorage.getItem("storage") || "");
       getDataFirebase();
-      return;
     };
-    
-    if(myStorage.getItem("storage") !== null) return setStorage(myStorage.getItem("storage") || "");
 
     if(storage === ""){
       setStorage(v4());
