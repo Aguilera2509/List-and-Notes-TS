@@ -40,7 +40,7 @@ const Home: NextPage = ( ) => {
   const [filList, setFilList] = useState<Array<string>>([]);
 
   const getDataFirebase = ():void =>{
-    const starCountRef:DatabaseReference = ref(database, JSON.parse(storage));
+    const starCountRef:DatabaseReference = ref(database, storage);
     onValue(starCountRef, (snapshot:any) => {
       const data:uData = snapshot.val();
       if(data === null) {
@@ -122,7 +122,7 @@ const Home: NextPage = ( ) => {
       return;
     };
     
-    if(myStorage.getItem("storage") !== null) return setStorage(JSON.stringify(myStorage.getItem("storage")));
+    if(myStorage.getItem("storage") !== null) return setStorage(myStorage.getItem("storage") || "");
 
     if(storage === ""){
       setStorage(v4());

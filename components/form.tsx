@@ -4,46 +4,58 @@ import { eData, list, note, tip } from "./helper/interface"
 import { ref, set, update } from "firebase/database";
 import { database } from "./config/firebase";
 
-function writeUserData(body: { title: string, keyword: string, content: string, importance:string, id:number }, storage:string):void {
-  if(body.keyword){
-    set(ref(database, `${JSON.parse(storage)}/notes/${body.id}`), {
-      title: body.title,
-      keyword: body.keyword,
-      content: body.content,
-      id: body.id
+interface body{
+  title: string, 
+  keyword: string, 
+  content: string, 
+  importance:string, 
+  id:number
+};
+
+function writeUserData(body:body, storage:string):void {
+  const { title, keyword, content, importance, id } = body;
+
+  if(keyword){
+    set(ref(database, `${storage}/notes/${id}`), {
+      title: title,
+      keyword: keyword,
+      content: content,
+      id: id
     });
   }else{
-    set(ref(database, `${JSON.parse(storage)}/list/${body.id}`), {
-      title: body.title,
-      content: body.content,
-      importance: body.importance,        
-      id: body.id
+    set(ref(database, `${storage}/list/${id}`), {
+      title: title,
+      content: content,
+      importance: importance,        
+      id: id
     });
   };
 };
 
-function writeNewPost(body: { title:string, keyword:string, content:string, importance:string, id:number }, storage:string):void {
-  if(body.keyword){
+function writeNewPost(body:body, storage:string):void {
+  const { title, keyword, content, importance, id } = body;
+
+  if(keyword){
     const postData:note = {
-      title: body.title,
-      keyword: body.keyword,
-      content: body.content,
-      id: body.id
+      title: title,
+      keyword: keyword,
+      content: content,
+      id: id
     };
     // Write the new post's data simultaneously in the posts list and the user's post list.
     const updates:any = {};
-    updates[`${JSON.parse(storage)}/notes/${body.id}`] = postData;
+    updates[`${storage}/notes/${id}`] = postData;
     update(ref(database), updates);
   }else{
     const postData:list = {
-      title: body.title,
-      content: body.content,
-      importance: body.importance,
-      id: body.id
+      title: title,
+      content: content,
+      importance: importance,
+      id: id
     };
     // Write the new post's data simultaneously in the posts list and the user's post list.
     const updates:any = {};
-    updates[`${JSON.parse(storage)}/list/${body.id}`] = postData;
+    updates[`${storage}/list/${id}`] = postData;
     update(ref(database), updates);
   };  
 };
