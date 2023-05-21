@@ -203,7 +203,7 @@ const Home: NextPage = ( ) => {
       <div style={{"borderTop": "1px solid #eaeaea"}}></div>
 
       {!notificationAllowed &&
-        <NotNotifications message="Notifications&apos;s not working, change notification's permission" />
+        <NotNotifications message="Notifications&apos;s not working, change notification&apos;s permission" />
       }
       {errorSW &&
         <NotNotifications message="You are not able to recieve notifications. Change your browser" />
