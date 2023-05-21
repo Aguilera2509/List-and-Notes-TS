@@ -1,12 +1,13 @@
 import { NextPage } from "next";
 import { handleDelete, time } from "./helper/simplesfuncs";
 import { eData, note, tip } from "./helper/interface";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 export const RenderNote:NextPage<{note:note, storage:string, setEditData:Dispatch<SetStateAction<eData>>, setTip:Dispatch<SetStateAction<tip>>}> = ({ note, storage, setEditData, setTip }) => {    
-    const handleUpdate = ({ target }:any):void => {
-        setEditData({title:target.getAttribute("data-title"), keyword:target.getAttribute("data-keyword"), content:target.getAttribute("data-content"), 
-        id:parseInt(target.getAttribute("data-id")), importance:""});
+    const handleUpdate = (e:React.MouseEvent<HTMLButtonElement>):void => {
+        const target = e.target as HTMLElement;
+        setEditData({title:target.getAttribute("data-title") || "", keyword:target.getAttribute("data-keyword") || "", content:target.getAttribute("data-content") || "", 
+        id:parseInt(target.getAttribute("data-id") || "0"), importance:""});
         setTip({note: true, list: false});
     };
 

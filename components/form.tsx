@@ -51,7 +51,7 @@ function writeNewPost(body: { title:string, keyword:string, content:string, impo
 export const Form:NextPage<{tip:tip, storage:string, setTip:Dispatch<SetStateAction<tip>>, 
   editData:eData, setEditData:Dispatch<SetStateAction<eData>>}> = ({tip, storage, setTip, editData, setEditData}) =>{
 
-  const handleChange = (e:any):void =>{
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>):void =>{
     setEditData({
       ...editData,
       [e.target.name]: e.target.value
@@ -63,7 +63,7 @@ export const Form:NextPage<{tip:tip, storage:string, setTip:Dispatch<SetStateAct
     setEditData({title:"", keyword:"", content:"", id:0, importance:""});
   };
 
-  const handleSubmit = (e:any):void => {
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>):void => {
     e.preventDefault();
 
     if(editData.id){
@@ -97,21 +97,21 @@ export const Form:NextPage<{tip:tip, storage:string, setTip:Dispatch<SetStateAct
           <label htmlFor="floatingTextarea2">About</label>
         </div>
         {tip.list &&
-          <div className="mb-3" onChange={handleChange}>
+          <div className="mb-3">
             <div className="form-check">
-              <input className="form-check-input" type="radio" name="importance" id="exampleRadios1" value="importanceMain" />
+              <input className="form-check-input" type="radio" name="importance" id="exampleRadios1" value="importanceMain" onChange={handleChange} checked={editData.importance === "importanceMain"} />
               <label className="form-check-label" htmlFor="exampleRadios1">
                 Important
               </label>
             </div>
             <div className="form-check">
-              <input className="form-check-input" type="radio" name="importance" id="exampleRadios2" value="importanceSecondary" />
+              <input className="form-check-input" type="radio" name="importance" id="exampleRadios2" value="importanceSecondary" onChange={handleChange} checked={editData.importance === "importanceSecondary"} />
               <label className="form-check-label" htmlFor="exampleRadios2">
                 Medium Important
               </label>
             </div>
             <div className="form-check">
-              <input className="form-check-input" type="radio" name="importance" id="exampleRadios3" value="notImportance" />
+              <input className="form-check-input" type="radio" name="importance" id="exampleRadios3" value="notImportance" onChange={handleChange} checked={editData.importance === "notImportance"} />
               <label className="form-check-label" htmlFor="exampleRadios3">
                 Not Important
               </label>

@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import { v4 } from 'uuid';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RenderNote } from '../components/rendernotes';
 import { RenderList } from '../components/renderlist';
 import { Form } from '../components/form';
@@ -88,7 +88,7 @@ const Home: NextPage = ( ) => {
     };
   };
   
-  const handleKeyUpNote = (event:any):void => {
+  const handleKeyUpNote = (event:React.KeyboardEvent<HTMLInputElement>):void => {
     if(yourData.notes.length === 0) return;
     if(deleteMove.includes(event.key)) return setFilNotes(filNotes);
     if(event.key === "Backspace"){
@@ -100,7 +100,7 @@ const Home: NextPage = ( ) => {
     setFilNotes([...filNotes, event.key.toLowerCase()]);
   };
 
-  const handleKeyUpList = (event:any):void => {
+  const handleKeyUpList = (event:React.KeyboardEvent<HTMLInputElement>):void => {
     if(yourData.list.length === 0) return;
     if(deleteMove.includes(event.key)) return setFilList(filList);
     if(event.key === "Backspace"){

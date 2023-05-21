@@ -4,10 +4,10 @@ import React, { Dispatch, SetStateAction } from "react";
 import { eData, list, tip } from "./helper/interface";
 
 export const RenderList:NextPage<{toDo:list, storage:string, setEditData:Dispatch<SetStateAction<eData>>, setTip:Dispatch<SetStateAction<tip>>}> = ({ toDo, storage, setEditData, setTip }) =>{
-    
-    const handleUpdate = ({ target }:any):void =>{
-        setEditData({title:target.getAttribute("data-title"), keyword:"", content:target.getAttribute("data-content"), 
-        id:parseInt(target.getAttribute("data-id")), importance:target.getAttribute("data-importance")});
+    const handleUpdate = (e:React.MouseEvent<HTMLButtonElement>):void =>{
+        const target = e.target as HTMLElement;
+        setEditData({title:target.getAttribute("data-title") || "", keyword:"", content:target.getAttribute("data-content") || "", 
+        id:parseInt(target.getAttribute("data-id") || '0'), importance:target.getAttribute("data-importance") || ""});
         setTip({note: false, list: true});
     };
     
