@@ -40,7 +40,7 @@ const Home: NextPage = ( ) => {
   const [filList, setFilList] = useState<Array<string>>([]);
 
   const getDataFirebase = ():void =>{
-    const starCountRef:DatabaseReference = ref(database, storage);
+    const starCountRef:DatabaseReference = ref(database, JSON.parse(storage));
     onValue(starCountRef, (snapshot:any) => {
       const data:uData = snapshot.val();
       if(data === null) {
@@ -113,15 +113,16 @@ const Home: NextPage = ( ) => {
   };
 
   useEffect(()=>{
+    registerServiceWorker()
+
     const myStorage:Storage = localStorage;
     
     if(storage.length !== 0 && myStorage.getItem("storage") !== null){
-      setStorage(myStorage.getItem("storage") || "");
       getDataFirebase();
-      return
+      return;
     };
-
-    registerServiceWorker()
+    
+    if(myStorage.getItem("storage") !== null) return setStorage(JSON.stringify(myStorage.getItem("storage")));
 
     if(storage === ""){
       setStorage(v4());
@@ -129,6 +130,7 @@ const Home: NextPage = ( ) => {
       myStorage.setItem("storage", storage);
     };
   },[storage]);
+
 
   return (
     <div className={styles.container}>
@@ -202,7 +204,7 @@ const Home: NextPage = ( ) => {
       <div style={{"borderTop": "1px solid #eaeaea"}}></div>
 
       {!notificationAllowed &&
-        <NotNotifications message="Notifications&apos;s not working, change notification&apos;s permission" />
+        <NotNotifications message="Notifications&apos;s not working, change notifications&apos;s permission" />
       }
       {errorSW &&
         <NotNotifications message="You are not able to recieve notifications. Change your browser" />

@@ -16,14 +16,14 @@ function writeUserData(body:body, storage:string):void {
   const { title, keyword, content, importance, id } = body;
 
   if(keyword){
-    set(ref(database, `${storage}/notes/${id}`), {
+    set(ref(database, `${JSON.parse(storage)}/notes/${id}`), {
       title: title,
       keyword: keyword,
       content: content,
       id: id
     });
   }else{
-    set(ref(database, `${storage}/list/${id}`), {
+    set(ref(database, `${JSON.parse(storage)}/list/${id}`), {
       title: title,
       content: content,
       importance: importance,        
@@ -44,7 +44,7 @@ function writeNewPost(body:body, storage:string):void {
     };
     // Write the new post's data simultaneously in the posts list and the user's post list.
     const updates:any = {};
-    updates[`${storage}/notes/${id}`] = postData;
+    updates[`${JSON.parse(storage)}/notes/${id}`] = postData;
     update(ref(database), updates);
   }else{
     const postData:list = {
@@ -55,7 +55,7 @@ function writeNewPost(body:body, storage:string):void {
     };
     // Write the new post's data simultaneously in the posts list and the user's post list.
     const updates:any = {};
-    updates[`${storage}/list/${id}`] = postData;
+    updates[`${JSON.parse(storage)}/list/${id}`] = postData;
     update(ref(database), updates);
   };  
 };
