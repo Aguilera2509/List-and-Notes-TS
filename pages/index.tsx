@@ -40,7 +40,7 @@ const Home: NextPage = ( ) => {
   const [filList, setFilList] = useState<Array<string>>([]);
 
   const getDataFirebase = ():void =>{
-    const starCountRef:DatabaseReference = ref(database, JSON.parse(storage));
+    const starCountRef:DatabaseReference = ref(database, storage.replaceAll(" ", ""));
     onValue(starCountRef, (snapshot:any) => {
       const data:uData = snapshot.val();
       if(data === null) {
@@ -117,20 +117,22 @@ const Home: NextPage = ( ) => {
 
     const myStorage:Storage = localStorage;
     
-    if(storage.length !== 0 && myStorage.getItem("storage") !== null){
+    if(storage.length !== 0 && myStorage.getItem("storage") !== null && !/^ *$/.test(myStorage.getItem("storage") as string) && storage.match(/[.#$\[\]]/g) === null){
       getDataFirebase();
       return;
+    }else{
+      console.error("If you are a programmer and are trying to f*ck my code by Storage. F*ck you");
     };
-    
-    if(myStorage.getItem("storage") !== null) return setStorage(JSON.stringify(myStorage.getItem("storage")));
+
+    if(myStorage.getItem("storage") !== null && !/^ *$/.test(myStorage.getItem("storage") as string)) return setStorage(myStorage.getItem("storage") as string);
 
     if(storage === ""){
       setStorage(v4());
     }else{
       myStorage.setItem("storage", storage);
+      setLoader(false);
     };
   },[storage]);
-
 
   return (
     <div className={styles.container}>

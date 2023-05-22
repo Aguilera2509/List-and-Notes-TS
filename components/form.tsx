@@ -15,15 +15,15 @@ interface body{
 function writeUserData(body:body, storage:string):void {
   const { title, keyword, content, importance, id } = body;
 
-  if(keyword){
-    set(ref(database, `${JSON.parse(storage)}/notes/${id}`), {
+  if(keyword && storage.match(/[.#$\[\]]/g) === null){
+    set(ref(database, `${storage.replaceAll(" ", "")}/notes/${id}`), {
       title: title,
       keyword: keyword,
       content: content,
       id: id
     });
-  }else{
-    set(ref(database, `${JSON.parse(storage)}/list/${id}`), {
+  }else if(!keyword && storage.match(/[.#$\[\]]/g) === null){
+    set(ref(database, `${storage.replaceAll(" ", "")}/list/${id}`), {
       title: title,
       content: content,
       importance: importance,        
@@ -35,7 +35,7 @@ function writeUserData(body:body, storage:string):void {
 function writeNewPost(body:body, storage:string):void {
   const { title, keyword, content, importance, id } = body;
 
-  if(keyword){
+  if(keyword && storage.match(/[.#$\[\]]/g) === null){
     const postData:note = {
       title: title,
       keyword: keyword,
@@ -44,9 +44,9 @@ function writeNewPost(body:body, storage:string):void {
     };
     // Write the new post's data simultaneously in the posts list and the user's post list.
     const updates:any = {};
-    updates[`${JSON.parse(storage)}/notes/${id}`] = postData;
+    updates[`${storage.replaceAll(" ", "")}/notes/${id}`] = postData;
     update(ref(database), updates);
-  }else{
+  }else if(!keyword && storage.match(/[.#$\[\]]/g) === null){
     const postData:list = {
       title: title,
       content: content,
@@ -55,7 +55,7 @@ function writeNewPost(body:body, storage:string):void {
     };
     // Write the new post's data simultaneously in the posts list and the user's post list.
     const updates:any = {};
-    updates[`${JSON.parse(storage)}/list/${id}`] = postData;
+    updates[`${storage.replaceAll(" ", "")}/list/${id}`] = postData;
     update(ref(database), updates);
   };  
 };
